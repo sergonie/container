@@ -41,7 +41,7 @@ final class DependencyResolver
         $values = [];
         if ($constructor) {
             $arguments = $this->parseArguments($reflection->getConstructor());
-            $values = $this->resolveArguments($arguments, $bindings, $className);
+            $values = $this->resolveArguments($arguments, $className, $bindings);
         }
 
         return $reflection->newInstanceArgs($values);
@@ -75,7 +75,7 @@ final class DependencyResolver
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    private function resolveArguments(array $arguments, array $bindings = [], string $context): array
+    private function resolveArguments(array $arguments, string $context, array $bindings = [], ): array
     {
         $values = [];
         foreach ($arguments as $argument) {

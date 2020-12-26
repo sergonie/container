@@ -75,7 +75,7 @@ final class DependencyResolver
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    private function resolveArguments(array $arguments, string $context, array $bindings = [], ): array
+    private function resolveArguments(array $arguments, string $context, array $bindings = []): array
     {
         $values = [];
         foreach ($arguments as $argument) {

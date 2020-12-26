@@ -55,7 +55,7 @@ final class DependencyResolver
     {
         $arguments = [];
         foreach ($function->getParameters() as $parameter) {
-            $type = $parameter->getClass() ? $parameter->getClass()->getName() : '';
+            $type = $parameter->getType() ? $parameter->getType()->getName() : '';
             $arguments[] = new Argument(
                 '$' . $parameter->getName(),
                 $type,

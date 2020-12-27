@@ -10,13 +10,12 @@ use ReflectionMethod;
 
 final class DependencyResolver
 {
-    /** @var ContainerInterface */
-    private $container;
+    private ContainerInterface $container;
 
     /**
      * @var ReflectionClass[]
      */
-    private static $reflections = [];
+    private static array $reflections = [];
 
     public function __construct(ContainerInterface $container)
     {
@@ -79,12 +78,19 @@ final class DependencyResolver
     {
         $values = [];
         foreach ($arguments as $argument) {
-            if (null !== $bindings && isset($bindings[$argument->getName()])) {
+            if (isset($bindings[$argument->getName()])) {
                 $values[] = $bindings[$argument->getName()];
-            } elseif ($this->container instanceof ContainerInterface && $argument->getType() && $this->container->has($argument->getType())) {
-                $values[] = $this->container->get($argument->getType(), $context);
-            } elseif ($argument->isOptional()) {
+
+            } else if (class_exists($argument->getType())) {
+                if ($this->container->has($argument->getType())) {
+                    $values[] = $this->container->get($argument->getType(), $context);
+                } else {
+                    $values[] = $this->resolve($argument->getType());
+                }
+
+            } else if ($argument->isOptional()) {
                 $values[] = $argument->getDefaultValue();
+
             } else {
                 throw DependencyResolverException::forAutowireFailure($argument->getName(), $context);
             }

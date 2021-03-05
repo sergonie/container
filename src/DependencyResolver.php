@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Igni\Container;
+namespace Sergonie\Container;
 
-use Igni\Container\DependencyResolver\Argument;
-use Igni\Container\Exception\DependencyResolverException;
+use Sergonie\Container\DependencyResolver\Argument;
+use Sergonie\Container\Exception\DependencyResolverException;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionMethod;

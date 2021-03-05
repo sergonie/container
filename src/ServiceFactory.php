@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Igni\Container;
+namespace Sergonie\Container;
 
 use Psr\Container\ContainerInterface;
 use Closure;

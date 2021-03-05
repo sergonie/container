@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Igni\Container\ServiceFactory;
+namespace Sergonie\Container\ServiceFactory;
 
 use Psr\Container\ContainerInterface;
 

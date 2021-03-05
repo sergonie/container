@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace IgniTest\Unit\Container\DependencyResolver;
+namespace SergonieTest\Unit\Container\DependencyResolver;
 
-use Igni\Container\DependencyResolver\Argument;
+use Sergonie\Container\DependencyResolver\Argument;
 use PHPUnit\Framework\TestCase;
 
 final class ArgumentTest extends TestCase

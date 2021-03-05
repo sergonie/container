@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace IgniTest\Fixtures;
+namespace SergonieTest\Fixtures;
 
 class D
 {

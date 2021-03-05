@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace IgniTest\Unit\Container;
+namespace SergonieTest\Unit\Container;
 
-use Igni\Container\ServiceLocator;
-use IgniTest\Fixtures;
+use Sergonie\Container\ServiceLocator;
+use SergonieTest\Fixtures;
 use PHPUnit\Framework\TestCase;
 
 final class ServiceLocatorTest extends TestCase

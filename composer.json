@@ -1,5 +1,5 @@
 {
-  "name": "igniphp/container",
+  "name": "sergonie/container",
   "description": "PSR-11 compatible dependency container",
   "keywords": [
     "PSR-11",
@@ -7,13 +7,17 @@
     "Fast",
     "Dependency Container",
     "Service Locator",
-    "PHP 7"
+    "PHP 7/8"
   ],
   "license": "MIT",
   "authors": [
     {
       "name": "Dawid <krac> Kraczkowski",
       "email": "dawid.kraczkowski@gmail.com"
+    },
+    {
+      "name": "Sergey <sergonie> Tarasenko",
+      "email": "s.s.tarasenko@gmail.com"
     }
   ],
   "require": {
@@ -26,12 +30,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Igni\\Container\\": "src/"
+      "Sergonie\\Container\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "IgniTest\\": "tests/"
+      "SergonieTest\\": "tests/"
     }
   }
 }

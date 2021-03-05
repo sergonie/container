@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace IgniTest\Unit\Container;
+namespace SergonieTest\Unit\Container;
 
-use Igni\Container\DependencyResolver;
-use IgniTest\Fixtures\A;
-use IgniTest\Fixtures\B;
-use IgniTest\Fixtures\Bar;
-use IgniTest\Fixtures\BInterface;
-use IgniTest\Fixtures\Boo;
-use IgniTest\Fixtures\C;
-use IgniTest\Fixtures\D;
-use IgniTest\Fixtures\Foo;
+use Sergonie\Container\DependencyResolver;
+use SergonieTest\Fixtures\A;
+use SergonieTest\Fixtures\B;
+use SergonieTest\Fixtures\Bar;
+use SergonieTest\Fixtures\BInterface;
+use SergonieTest\Fixtures\Boo;
+use SergonieTest\Fixtures\C;
+use SergonieTest\Fixtures\D;
+use SergonieTest\Fixtures\Foo;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;

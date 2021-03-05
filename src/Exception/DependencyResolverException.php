@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Igni\Container\Exception;
+namespace Sergonie\Container\Exception;
 
 use Psr\Container\ContainerExceptionInterface;
 use RuntimeException;

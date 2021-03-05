@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Igni\Container\ServiceFactory;
+namespace Sergonie\Container\ServiceFactory;
 
 use Psr\Container\ContainerInterface;
-use Igni\Container\DependencyResolver;
-use Igni\Container\ServiceFactory;
+use Sergonie\Container\DependencyResolver;
+use Sergonie\Container\ServiceFactory;
 
 class FactoryServiceFactory extends ServiceFactory
 {

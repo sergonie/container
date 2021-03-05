@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Igni\Container;
+namespace Sergonie\Container;
 
-use Igni\Container\Exception\ServiceLocatorException;
-use Igni\Container\ServiceFactory\FactoryServiceFactory;
-use Igni\Container\ServiceFactory\SharedServiceFactory;
+use Sergonie\Container\Exception\ServiceLocatorException;
+use Sergonie\Container\ServiceFactory\FactoryServiceFactory;
+use Sergonie\Container\ServiceFactory\SharedServiceFactory;
 use Psr\Container\ContainerInterface;
 use Closure;
 

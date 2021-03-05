@@ -1,9 +1,6 @@
-# ![Igni logo](https://github.com/igniphp/common/blob/master/logo/full.svg) ![Build Status](https://travis-ci.org/igniphp/container.svg?branch=master)
+Is a `psr-container` compliant lightweight service locator pattern implementation.
 
-## Igni Container
-Licensed under MIT License.
-
-**Igni** container is a `psr-container` compliant lightweight service locator pattern implementation.
+This package based on [Igni Container](https://github.com/igniphp/container)
 
 ## List of features:
 - **Simple usage** if you are familiar with `psr-container` there is no learning-curve required for basic usage
@@ -13,14 +10,14 @@ Licensed under MIT License.
 ## Installation
 
 ```
-composer install igniphp/container
+composer install sergonie/container
 ```
 
 ### Basic usage
 
 ```php
 <?php
-$serviceLocator = new Igni\Container\ServiceLocator();
+$serviceLocator = new Sergonie\Container\ServiceLocator();
 $serviceLocator->set('my_awesome_service', new stdClass());
 
 $myService = $serviceLocator->get('my_awesome_service');
@@ -36,7 +33,7 @@ instance.
 
 ```php
 <?php
-use Igni\Container\ServiceLocator;
+use Sergonie\Container\ServiceLocator;
 
 class Service 
 {
@@ -61,7 +58,7 @@ Factored services are instantiated every time container is asked for the service
 
 ```php
 <?php
-use Igni\Container\ServiceLocator;
+use Sergonie\Container\ServiceLocator;
 
 class Service 
 {
@@ -87,7 +84,7 @@ will be resolved automatically by the container.
 
 ```php
 <?php
-use Igni\Container\ServiceLocator;
+use Sergonie\Container\ServiceLocator;
 
 class A
 {
@@ -112,5 +109,3 @@ $serviceLocator->share(Service::class);
 
 var_dump($serviceLocator->get(Service::class)->a instanceof A);// true
 ```
-
-That's all folks!

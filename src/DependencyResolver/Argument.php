@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Igni\Container\DependencyResolver;
+namespace Sergonie\Container\DependencyResolver;
 
 final class Argument
 {

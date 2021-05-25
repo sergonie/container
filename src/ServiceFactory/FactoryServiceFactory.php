@@ -8,6 +8,9 @@ use Sergonie\Container\ServiceFactory;
 
 class FactoryServiceFactory extends ServiceFactory
 {
+    /**
+     * @throws \ReflectionException
+     */
     public function __invoke(ContainerInterface $container, string $serviceName)
     {
         if ($this->resolver) {

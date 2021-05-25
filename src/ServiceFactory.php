@@ -7,10 +7,12 @@ use Closure;
 
 abstract class ServiceFactory
 {
-    protected $name;
-    protected $context;
-    protected $bindings;
-    protected $resolver;
+    protected string $name;
+    protected string $context;
+
+    /** @var string[] */
+    protected array $bindings;
+    protected ?Closure $resolver;
 
     public function __construct(string $serviceName, Closure $resolver = null)
     {
@@ -23,6 +25,7 @@ abstract class ServiceFactory
     public function for(string $context): ServiceFactory
     {
         $this->context = $context;
+
         return $this;
     }
 

@@ -8,6 +8,10 @@ class SharedServiceFactory extends FactoryServiceFactory
 {
     private $instance;
 
+    /**
+     * @inheritDoc
+     * @throws \ReflectionException
+     */
     public function __invoke(ContainerInterface $container, string $serviceName)
     {
         if ($this->instance) {

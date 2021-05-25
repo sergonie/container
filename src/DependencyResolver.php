@@ -2,6 +2,9 @@
 
 namespace Sergonie\Container;
 
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use ReflectionException;
 use Sergonie\Container\DependencyResolver\Argument;
 use Sergonie\Container\Exception\DependencyResolverException;
 use Psr\Container\ContainerInterface;
@@ -22,12 +25,26 @@ final class DependencyResolver
         $this->container = $container;
     }
 
-    public function __invoke(string $service, array $bindings = [])
+    /**
+     * @param  string  $service
+     * @param  array  $bindings
+     *
+     * @return object
+     * @throws ReflectionException
+     */
+    public function __invoke(string $service, array $bindings = []): object
     {
         return $this->resolve($service, $bindings);
     }
 
-    public function resolve(string $className, array $bindings = [])
+    /**
+     * @param  string  $className
+     * @param  array  $bindings
+     *
+     * @return object
+     * @throws ReflectionException
+     */
+    public function resolve(string $className, array $bindings = []): object
     {
         $reflection = self::reflectClass($className);
 
@@ -38,7 +55,7 @@ final class DependencyResolver
         $constructor = $reflection->getConstructor();
 
         $values = [];
-        if ($constructor) {
+        if (!is_null($constructor)) {
             $arguments = $this->parseArguments($reflection->getConstructor());
             $values = $this->resolveArguments($arguments, $className, $bindings);
         }
@@ -47,14 +64,19 @@ final class DependencyResolver
     }
 
     /**
-     * @param ReflectionMethod $function
+     * @param  ReflectionMethod  $function
+     *
      * @return Argument[]
+     * @throws ReflectionException
      */
     private function parseArguments(ReflectionMethod $function): array
     {
         $arguments = [];
         foreach ($function->getParameters() as $parameter) {
-            $type = $parameter->getType() ? $parameter->getType()->getName() : '';
+            $type = $parameter->getType()
+                ? $parameter->getType()->getName()
+                : '';
+
             $arguments[] = new Argument(
                 '$' . $parameter->getName(),
                 $type,
@@ -68,11 +90,11 @@ final class DependencyResolver
 
     /**
      * @param Argument[] $arguments
-     * @param array $bindings
+     * @param string[] $bindings
      * @param string $context
+     *
      * @return array
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface|NotFoundExceptionInterface|ReflectionException
      */
     private function resolveArguments(array $arguments, string $context, array $bindings = []): array
     {
@@ -82,11 +104,9 @@ final class DependencyResolver
                 $values[] = $bindings[$argument->getName()];
 
             } else if (class_exists($argument->getType())) {
-                if ($this->container->has($argument->getType())) {
-                    $values[] = $this->container->get($argument->getType(), $context);
-                } else {
-                    $values[] = $this->resolve($argument->getType());
-                }
+                $values[] = $this->container->has($argument->getType())
+                    ? $this->container->get($argument->getType(), $context)
+                    : $this->resolve($argument->getType());
 
             } else if ($argument->isOptional()) {
                 $values[] = $argument->getDefaultValue();
@@ -99,12 +119,15 @@ final class DependencyResolver
         return $values;
     }
 
+    /**
+     * @param  string  $class
+     *
+     * @return \ReflectionClass
+     * @throws \ReflectionException
+     */
     private static function reflectClass(string $class): ReflectionClass
     {
-        if (isset(self::$reflections[$class])) {
-            return self::$reflections[$class];
-        }
-
-        return self::$reflections[$class] = new ReflectionClass($class);
+        return self::$reflections[$class] ??
+            (self::$reflections[$class] = new ReflectionClass($class));
     }
 }

@@ -4,9 +4,9 @@ namespace Sergonie\Container\DependencyResolver;
 
 final class Argument
 {
-    private $name;
-    private $type;
-    private $optional;
+    private string $name;
+    private string $type;
+    private bool $optional;
     private $default;
 
     public function __construct(string $name, string $type, bool $optional = false, $default = null)

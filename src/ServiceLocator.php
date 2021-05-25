@@ -11,8 +11,11 @@ use Closure;
 class ServiceLocator implements ContainerInterface
 {
     /** @var ServiceFactory[] */
-    private $services = [];
+    private array $services = [];
 
+    /**
+     * @inheritDoc
+     */
     public function get($id, string $context = '')
     {
         if (!isset($this->services[$id])) {
@@ -61,6 +64,12 @@ class ServiceLocator implements ContainerInterface
         $this->services[$id][] = $service;
     }
 
+    /**
+     * @param  string  $id
+     * @param  string  $context
+     *
+     * @return bool
+     */
     public function has($id, string $context = ''): bool
     {
         if ($context === '') {

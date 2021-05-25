@@ -16,7 +16,7 @@ class ServiceLocator implements ContainerInterface
     /**
      * @inheritDoc
      */
-    public function get($id, string $context = '')
+    public function get(string $id, string $context = '')
     {
         if (!isset($this->services[$id])) {
             throw ServiceLocatorException::serviceNotFoundException($id);
@@ -70,7 +70,7 @@ class ServiceLocator implements ContainerInterface
      *
      * @return bool
      */
-    public function has($id, string $context = ''): bool
+    public function has(string $id, string $context = ''): bool
     {
         if ($context === '') {
             return !empty($this->services[$id]);

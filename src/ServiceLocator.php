@@ -2,15 +2,16 @@
 
 namespace Sergonie\Container;
 
+use Closure;
+use Psr\Container\ContainerInterface;
 use Sergonie\Container\Exception\ServiceLocatorException;
 use Sergonie\Container\ServiceFactory\FactoryServiceFactory;
 use Sergonie\Container\ServiceFactory\SharedServiceFactory;
-use Psr\Container\ContainerInterface;
-use Closure;
 
+/** @todo: get rid of contexts */
 class ServiceLocator implements ContainerInterface
 {
-    /** @var ServiceFactory[] */
+    /** @var array<string, ServiceFactory[]> */
     private array $services = [];
 
     /**
@@ -21,22 +22,22 @@ class ServiceLocator implements ContainerInterface
         if (!isset($this->services[$id])) {
             throw ServiceLocatorException::serviceNotFoundException($id);
         }
-        /** @var ServiceFactory $result */
-        $result = $this->services[$id][0];
+
         if ($context !== '') {
-            /** @var ServiceFactory $service */
             foreach ($this->services[$id] as $service) {
                 if ($service->getContext() === $context) {
-                    $result = $service;
-                    break;
+                    return $service;
                 }
             }
         }
-        if ($result instanceof ServiceFactory) {
-            return $result($this, $id);
-        }
 
-        return $result;
+        /** @var ServiceFactory|mixed $result */
+        $result = $this->services[$id][0];
+
+        //@todo: in my opinion this check is unnecessary here
+        return $result instanceof ServiceFactory
+            ? $result($this, $id)
+            : $result;
     }
 
     public function factory(string $id, Closure $definition = null): ServiceFactory
@@ -44,6 +45,7 @@ class ServiceLocator implements ContainerInterface
         if (!isset($this->services[$id])) {
             $this->services[$id] = [];
         }
+
         return $this->services[$id][] = new FactoryServiceFactory($id, $definition);
     }
 
@@ -52,6 +54,7 @@ class ServiceLocator implements ContainerInterface
         if (!isset($this->services[$id])) {
             $this->services[$id] = [];
         }
+
         return $this->services[$id][] = new SharedServiceFactory($id, $definition);
     }
 

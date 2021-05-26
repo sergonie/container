@@ -1,18 +1,18 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace Sergonie\Container;
 
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
-use ReflectionException;
-use Sergonie\Container\DependencyResolver\Argument;
-use Sergonie\Container\Exception\DependencyResolverException;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
+use Sergonie\Container\DependencyResolver\Argument;
+use Sergonie\Container\Exception\DependencyResolverException;
 
 final class DependencyResolver
 {
+    /** @var ServiceLocator|ContainerInterface*/
     private ContainerInterface $container;
 
     /**
@@ -20,6 +20,11 @@ final class DependencyResolver
      */
     private static array $reflections = [];
 
+    /**
+     * DependencyResolver constructor.
+     *
+     * @param  ServiceLocator|ContainerInterface  $container
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
@@ -57,7 +62,8 @@ final class DependencyResolver
         $values = [];
         if (!is_null($constructor)) {
             $arguments = $this->parseArguments($reflection->getConstructor());
-            $values = $this->resolveArguments($arguments, $className, $bindings);
+            $values = $this->resolveArguments($arguments, $className,
+                $bindings);
         }
 
         return $reflection->newInstanceArgs($values);
@@ -73,12 +79,13 @@ final class DependencyResolver
     {
         $arguments = [];
         foreach ($function->getParameters() as $parameter) {
-            $type = $parameter->getType()
+            $type = assert($parameter->getType() instanceof
+                \ReflectionNamedType)
                 ? $parameter->getType()->getName()
                 : '';
 
             $arguments[] = new Argument(
-                '$' . $parameter->getName(),
+                '$'.$parameter->getName(),
                 $type,
                 $parameter->isOptional(),
                 $parameter->isOptional() ? $parameter->getDefaultValue() : null
@@ -89,30 +96,35 @@ final class DependencyResolver
     }
 
     /**
-     * @param Argument[] $arguments
-     * @param string[] $bindings
-     * @param string $context
+     * @param  Argument[]  $arguments
+     * @param  string[]  $bindings
+     * @param  string  $context
      *
      * @return array
-     * @throws ContainerExceptionInterface|NotFoundExceptionInterface|ReflectionException
+     * @throws ReflectionException|\Sergonie\Container\Exception\DependencyResolverException
      */
-    private function resolveArguments(array $arguments, string $context, array $bindings = []): array
-    {
+    private function resolveArguments(
+        array $arguments,
+        string $context,
+        array $bindings = []
+    ): array {
         $values = [];
         foreach ($arguments as $argument) {
             if (isset($bindings[$argument->getName()])) {
                 $values[] = $bindings[$argument->getName()];
-
-            } else if (class_exists($argument->getType())) {
-                $values[] = $this->container->has($argument->getType())
-                    ? $this->container->get($argument->getType(), $context)
-                    : $this->resolve($argument->getType());
-
-            } else if ($argument->isOptional()) {
-                $values[] = $argument->getDefaultValue();
-
             } else {
-                throw DependencyResolverException::forAutowireFailure($argument->getName(), $context);
+                if (class_exists($argument->getType())) {
+                    $values[] = $this->container->has($argument->getType())
+                        ? $this->container->get($argument->getType(), $context)
+                        : $this->resolve($argument->getType());
+                } else {
+                    if ($argument->isOptional()) {
+                        $values[] = $argument->getDefaultValue();
+                    } else {
+                        throw DependencyResolverException::forAutowireFailure($argument->getName(),
+                            $context);
+                    }
+                }
             }
         }
 
